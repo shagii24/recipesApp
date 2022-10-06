@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+<!--
+
+    form for inserting
+
+    recipe name
+    recipe ingredients - first ask user for minumim (in their opinion) ingredients amount
+
+-->
+{% block body %}
+<div class = "index">
+    <h1>Recipe adder</h1>
+    <p>Please provide name and amount minimum amount of ingredients</p>
+    <form action="/add_recipies_ingr" method="get" name="ingredientsForm">
+        <input autocomplite="off" autofocus name="name" placeholder="Name" type="text" id="ingredients" required>
+        <input autocomplite="off" autofocus name="ingr_amount" placeholder="Min. amount of ingr." type="number" id="ingredients" required>
+        <span class="error" aria-live="polite"></span>
+        <input type="submit">
+    </form>
+</div>
+{% endblock %}

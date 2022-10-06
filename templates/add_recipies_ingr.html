@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class = "index">
+    <h1>Recipe selector</h1>
+    <p>Please provide all available ingredients for {{ name }}</p>
+    <button onclick="addInput()">Add more fields</button> 
+    <form action="/added_to_cookbook" method="post" name="ingredientsForm" id="addlist" class="container">
+        <div id = "ingrID">
+            <span class="error" aria-live="polite"></span>
+            <div>
+                <input autocomplite="off" autofocus name="name" placeholder="Name" type="text" id="ingredients" required><button disabled >Remove</button>
+            </div>
+            {% for item in range(ingr_amt - 1) %}
+            <div>
+                <input autocomplite="off" autofocus name="name" placeholder="Name" type="text" id="ingredients" required><button onclick="delete_row(this)">Remove</button>
+            </div>
+            {% endfor %}
+        </div>
+        <input type="submit">
+    </form>
+
+</div>
+<script>
+
+    function addInput() {
+    
+    var addList = document.getElementById('ingrID');
+    
+    var text = document.createElement('input');
+
+    var wraping_element = document.createElement('div')
+
+    addList.appendChild(wraping_element)
+
+    text.setAttribute('type','text')
+    text.setAttribute('value','')
+    text.setAttribute('name','name')
+    text.setAttribute('placeholder','Name')
+
+    wraping_element.appendChild(text);
+
+    var button_remove = document.createElement('button')
+
+    button_remove.innerHTML = "Remove"
+    button_remove.setAttribute("id","dummy")
+    wraping_element.appendChild(button_remove)
+    button_remove.onclick = function (){
+        this.parentElement.remove(this)
+    }
+
+    }
+    function delete_row(e){
+        e.parentElement.remove();
+    }
+    
+    </script>
+{% endblock %}
+

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class = "index">
+    <h1>Recipe selector</h1>
+    <p>Please provide all available ingredients minimum amount is 4</p>
+    <button onclick="addInput()">Add more fields</button> 
+    <form action="/recipes" method="post" name="ingredientsForm">
+        <div id = "ingrID">
+            <input autocomplite="off" autofocus name="name"  type="text" required>
+            <input autocomplite="off" autofocus name="name"  type="text" required>
+            <input autocomplite="off" autofocus name="name"  type="text" required>
+            <input autocomplite="off" autofocus name="name"  type="text" required>
+        </div>
+        <span class="error" aria-live="polite"></span>
+        <input type="submit"  id="index_button">
+    </form>
+
+   
+</div>
+<script>
+
+    function addInput() {
+    
+    var addList = document.getElementById('ingrID');
+    
+    var text = document.createElement('input');
+
+    text.setAttribute('type','text')
+    text.setAttribute('value','')
+    text.setAttribute('name','name')
+    text.setAttribute('placeholder','')
+
+    addList.appendChild(text);
+    }
+    
+    </script>
+{% endblock %}

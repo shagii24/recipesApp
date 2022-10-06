@@ -1,0 +1,41 @@
+body {
+    margin: auto;
+    text-align: center;
+   
+}
+.index{
+    display: grid;
+    place-items: center;
+}
+
+.index{
+    display: grid;
+    place-items: center;
+}
+
+form {
+    text-align: center;
+    max-width: 30em;
+    margin: 4%;
+}
+form input{
+    text-align: center;
+    max-width: 30em;
+    margin: 1%;
+}
+
+
+.index form #index_button{
+    margin-top:3%
+}
+
+p {
+    animation: color-change 1s infinite;
+  }
+  
+  @keyframes color-change {
+    0% { color: red; }
+    50% { color: blue; }
+    100% { color: red; }
+  }
+

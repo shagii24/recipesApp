@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class = "index">
+    <h1>Those are my propositions for you</h1>
+
+        {% for recipe in recipes_list %}
+            <p><a href = "{{'https://www.google.com/search?q=%s'%recipe }}">{{ recipe }}</li></p>
+        {% endfor %}
+
+    </div>
+{% endblock %}
