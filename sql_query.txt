@@ -1,1 +1,0 @@
-select recipes.recipes_name,count(recipes.recipes_name) as ingredients_count from recipes_ingredients join recipes on recipes.id = recipes_id join ingredients on ingredients.id = ingredient_id where ingredients.ingredient_name in ('chicken','onion','pasta') group by recipes.recipes_name;
