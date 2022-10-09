@@ -119,11 +119,28 @@ def show_all_recipes():
             recipe_dict[recipe[0]]=[recipe[1]]
         else:
             recipe_dict[recipe[0]].append(recipe[1])
-    
-    print(recipe_dict)
-        
 
     return render_template("show_all_recipes.html",recipe_dict=recipe_dict)
+
+@app.route("/delete_recipe_form",methods = ['GET'])
+def delete_recipe_form():
+    """gets name of deleted object and removes it from database"""
+    db_connection = dbcontext.dbConnection("recipes.db")
+    to_delete = [i for i in request.args.keys()]
+    get_id_statement= f"""
+                    select id from recipes where recipes_name = '{to_delete[0]}'"""
+    recipe_id = db_connection.execute_read_query(get_id_statement)
+    delete_statement_recipes=f"""
+                     DELETE FROM recipes where recipes_name = '{to_delete[0]}'   
+                    """
+    delete_statement_recipes_ingredients = f"""
+                     DELETE FROM recipes_ingredients where recipes_id = {recipe_id[0][0]}
+                    """
+    
+    db_connection.execute_query(delete_statement_recipes)
+    db_connection.execute_query(delete_statement_recipes_ingredients)
+
+    return show_all_recipes()
 
 def alpha_values(user_ingredients):
         user_input = [skladnik.strip().lower() for skladnik in user_ingredients]
