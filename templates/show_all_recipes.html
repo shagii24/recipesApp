@@ -4,33 +4,29 @@
 
 {% for item in recipe_dict %}
 <div class="container">
-    <div class="row">
-        <div id="accordion" class="col">
-            
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                    <h5 class="mb-2">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#{{ item }}" aria-expanded="true" aria-controls="collapseOne">
-                            {{ item }}
-                        </button>
-
-                    </h5>
-                </div>
+    <div class="container">
+        <div class="row"> 
+            <div class=" col-7">
+                <button class="btn btn-light collapsed navbar-toggler" data-toggle="collapse" style = "white-space: normal; text-align :start" data-target="#{{ item }}" aria-expanded="true" aria-controls="collapseOne">
+                    {{ item }}
+                </button>
             </div>
-            
-            <div id="{{ item }}" class="collapse collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="col-1">
+                <form action="/delete_recipe_form" method="get" name="delete_recipe" id="delete">
+                    <input type="image" src="/static/trash.png"  width="30" height="30" value = "Delete" name = "{{ item }}">
+                </form>
+            </div>
+        </div>
+
+            <div id="{{ item }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                 <ul class="card-body">
                     {% for i in recipe_dict[item] %}
                     <li>{{ i }}</li>
                     {% endfor %}
-                </div>
-            </div>  
-        
-      
-        <form action="/delete_recipe_form" method="get" name="delete_recipe" class="col" id="delete">
-            <input type="submit" value = "Delete" name = "{{ item }}">
-        </form>
-    </div>
+                </ul>
+            </div>
+        </div>        
+    <hr>
 </div>
 {% endfor %}   
 {% endblock %}

@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% for item in recipe_dict %}
+<div class="container">
+    <div class="container">
+        <div class="row"> 
+            <div class=" col-7">
+                <button class="btn btn-light collapsed navbar-toggler" data-toggle="collapse" style = "white-space: normal; text-align :start" data-target="#{{ item }}" aria-expanded="true" aria-controls="collapseOne">
+                    {{ item }}
+                </button>
+            </div>
+            <div class="col-1">
+                <form action="/#" method="get" name="delete_recipe" id="delete">
+                    <input type="image" src="/static/Pencil.jpg"  width="30" height="30" value = "Delete" name = "{{ item }}">
+                </form>
+            </div>
+        </div>
+       
+                <div id="{{ item }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                    <ul class="card-body">
+                        {% for i in recipe_dict[item] %}
+                        <div class="container">
+                            <div class="row">
+                        <li class="col-3">
+                            {{ i }}
+                        </li>
+                            <div class = "col-1">
+                            <form action="/#" method="get" name="delete_recipe" id="delete">
+                                <input type="image" src="/static/Pencil.jpg"  width="30" height="30" value = "Delete" name = "{{ item }}">
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+    </div>        
+<hr>
+</div>
+{% endfor %}  
+
+
+{% endblock %}

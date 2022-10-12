@@ -5,6 +5,28 @@ app = Flask(__name__)
 
 app.secret_key = "nskex23xdr"
 
+def get_all_recipes():
+    """fetch all available recipes for user"""
+    db_answer = None
+    con = dbcontext.dbConnection("recipes.db")
+
+    db_answer = con.execute_read_query(f"""
+                                        select 
+                                        recipes.recipes_name, ingredients.ingredient_name
+                                        from recipes_ingredients 
+                                        join recipes 
+                                        on recipes.id = recipes_id 
+                                        join ingredients on 
+                                        ingredients.id = ingredient_id;""")
+    all_recipes = [recipes for recipes in db_answer]
+    recipe_dict={}
+    for recipe in all_recipes:
+        if recipe[0] not in recipe_dict:
+            recipe_dict[recipe[0]]=[recipe[1]]
+        else:
+            recipe_dict[recipe[0]].append(recipe[1])
+    return recipe_dict
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -100,26 +122,7 @@ def add_recipies_ingr():
 
 @app.route("/show_all_recipes")
 def show_all_recipes():
-    """fetch all available recipes for user"""
-    db_answer = None
-    con = dbcontext.dbConnection("recipes.db")
-
-    db_answer = con.execute_read_query(f"""
-                                        select 
-                                        recipes.recipes_name, ingredients.ingredient_name
-                                        from recipes_ingredients 
-                                        join recipes 
-                                        on recipes.id = recipes_id 
-                                        join ingredients on 
-                                        ingredients.id = ingredient_id;""")
-    all_recipes = [recipes for recipes in db_answer]
-    recipe_dict={}
-    for recipe in all_recipes:
-        if recipe[0] not in recipe_dict:
-            recipe_dict[recipe[0]]=[recipe[1]]
-        else:
-            recipe_dict[recipe[0]].append(recipe[1])
-
+    recipe_dict = get_all_recipes()
     return render_template("show_all_recipes.html",recipe_dict=recipe_dict)
 
 @app.route("/delete_recipe_form",methods = ['GET'])
@@ -141,6 +144,12 @@ def delete_recipe_form():
     db_connection.execute_query(delete_statement_recipes_ingredients)
 
     return show_all_recipes()
+
+@app.route("/modify_recipes",methods = ['GET'])
+def modify_recipes():
+    recipe_dict = get_all_recipes()
+    return render_template("modify_recipes.html",recipe_dict=recipe_dict)
+
 
 def alpha_values(user_ingredients):
         user_input = [skladnik.strip().lower() for skladnik in user_ingredients]
