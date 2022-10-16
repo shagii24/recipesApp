@@ -19,6 +19,7 @@ class dbConnection():
         try:
             cursor.execute(query)
             result = cursor.fetchall()
+            cursor.close()
             return result
         except Error as e:
             print(f"The error '{e}' occurred")
@@ -30,6 +31,7 @@ class dbConnection():
             cursor.execute(query)
             connection.commit()
             print("Query executed successfully")
+            cursor.close()
         except Error as e:
             print(f"The error '{e}' occurred")
 

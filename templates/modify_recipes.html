@@ -1,47 +1,48 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
-{% for item in recipe_dict %}
 <div class="container">
-    <div class="container">
-        <div class="row"> 
-            <div class=" col-7">
-                <button class="btn btn-light collapsed navbar-toggler" data-toggle="collapse" style = "white-space: normal; text-align :start" data-target="#{{ item }}" aria-expanded="true" aria-controls="collapseOne">
-                    {{ item }}
-                </button>
-            </div>
-            <div class="col-1">
-                <form action="/#" method="get" name="delete_recipe" id="delete">
-                    <input type="image" src="/static/Pencil.jpg"  width="30" height="30" value = "Delete" name = "{{ item }}">
-                </form>
-            </div>
-        </div>
+    <div class = "row">
+        <div class="col-7">
+{% for item in recipe_dict %}
+
        
-                <div id="{{ item }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                    <ul class="card-body">
-                        {% for i in recipe_dict[item] %}
-                        <div class="container">
-                            <div class="row">
-                        <li class="col-3">
-                            {{ i }}
-                        </li>
-                            <div class = "col-1">
-                            <form action="/#" method="get" name="delete_recipe" id="delete">
-                                <input type="image" src="/static/Pencil.jpg"  width="30" height="30" value = "Delete" name = "{{ item }}">
-                            </form>
-                        </div>
-                        
+            <div class="container">
+                <div class="row"> 
+                    <div class="col-7">
+                        <form action="/update_recipe" method="get" style = "display: flex;">
+                            <input type="text"  width="30" height="30" value = "{{ item }}" name = "{{ item }}" id="{{ item }}" required>
+                            <input type="image" src="/static/Pencil.jpg"  width="30" height="30"> 
+                        </form>
                     </div>
                 </div>
-                        {% endfor %}
-                    </ul>
-                </div>
+                <ul>
+                    {% for i in recipe_dict[item] %}
+                    <div class="container">
+                        <div class="row">
+                            <li class="col-3"> 
+                                <form action="/update_ingredient" method="get" style = "display: flex;">
+                                    <input type="text"  width="30" height="30" value = "{{ i }}" name = "{{ item }};{{ i }}" id="{{ i }}" required>
+                                    <input type="image" src="/static/Pencil.jpg"  width="30" height="30"> 
+                                </form>
+                            </li>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </ul>
+            </div>        
+        <hr>
+        
 
-    </div>        
-<hr>
-</div>
+
 {% endfor %}  
-
-
+</div>
+<div class="col-3">
+    <div class="search-wrapper">
+        <label for="search">Search Recipes</label>
+        <input type="search" id = "search">
+    </div>
+</div>
+</div>
+</div>
 {% endblock %}

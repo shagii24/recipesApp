@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request,session
 import dbcontext
+from werkzeug import exceptions
 
 app = Flask(__name__)
 
@@ -150,6 +151,68 @@ def modify_recipes():
     recipe_dict = get_all_recipes()
     return render_template("modify_recipes.html",recipe_dict=recipe_dict)
 
+
+@app.route("/update_ingredient",methods = ['GET'])
+def update_ingredient():
+    """get name of recipe from html - first check if inserted ingredient is already in DB if yes assign new value to recipe otherwise create new ingredient"""
+    recipe_name =  [i for i in request.args.keys()]
+    old_recipe_ingredient=recipe_name[0].split(";")
+    new_ingredient_name = request.args.get(recipe_name[0])
+
+    if new_ingredient_name !="" and old_recipe_ingredient[0]!="" and old_recipe_ingredient[1]!="":
+
+        new_ingredient_name = request.args.get(recipe_name[0])
+
+        db_connection = dbcontext.dbConnection("recipes.db")
+        get_id_statement= f"""
+                        select id from recipes where recipes_name = '{old_recipe_ingredient[0]}';"""
+        recipe_id = db_connection.execute_read_query(get_id_statement)
+
+        #get old ingredient id
+        old_ingredient_id_statement = f"""
+                        select id from ingredients where ingredient_name = '{old_recipe_ingredient[1]}';"""
+        old_ingredient_id=db_connection.execute_read_query(old_ingredient_id_statement)
+
+        #check if ingredient already in db
+        ingredient_id_statement = f"""
+                        select id from ingredients where ingredient_name = '{new_ingredient_name}';"""
+        ingredient_id=db_connection.execute_read_query(ingredient_id_statement)
+
+        if not ingredient_id:
+            create_users = f"""INSERT INTO ingredients (ingredient_name)
+                                    VALUES ('{new_ingredient_name}');"""
+                                    
+            db_connection.execute_query(create_users)
+            #get id of new ingredient
+            new_ingredient_id_statement = f"""
+                        select id from ingredients where ingredient_name = '{new_ingredient_name}';"""
+            new_ingredient_id=db_connection.execute_read_query(new_ingredient_id_statement)
+
+
+            update_ingredient = f"""UPDATE recipes_ingredients SET ingredient_id = '{new_ingredient_id[0][0]}' where ingredient_id = {old_ingredient_id[0][0]} and recipes_id = {recipe_id[0][0]};"""
+            db_connection.execute_query(update_ingredient)
+        else:
+            update_ingredient = f"""UPDATE recipes_ingredients SET ingredient_id = {ingredient_id[0][0]} where ingredient_id = {old_ingredient_id[0][0]} and recipes_id = {recipe_id[0][0]};"""
+            db_connection.execute_query(update_ingredient)
+
+        return modify_recipes()
+
+    return 'All fields must be populated', 400
+
+@app.route("/update_recipe",methods = ['GET'])
+def update_recipe():
+    recipe_name =  [i for i in request.args.keys()]
+    new_recipe_name = request.args.get(recipe_name[0])
+    if recipe_name != "" and new_recipe_name != "":
+        db_connection = dbcontext.dbConnection("recipes.db")
+        update_recipe_name = f"""UPDATE recipes SET recipes_name = '{new_recipe_name}' where recipes_name = '{recipe_name[0]}';"""
+        db_connection.execute_query(update_recipe_name)
+        return modify_recipes()
+    return 'bad request!', 400
+
+@app.errorhandler(exceptions.BadRequest)
+def handle_bad_request(e):
+    return 'bad request!', 400
 
 def alpha_values(user_ingredients):
         user_input = [skladnik.strip().lower() for skladnik in user_ingredients]
