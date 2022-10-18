@@ -6,11 +6,11 @@
         <div class="col-7">
 {% for item in recipe_dict %}
 
-       
-            <div class="container">
+
+            <div class="container" data-header>
                 <div class="row"> 
                     <div class="col-7">
-                        <form action="/update_recipe" method="get" style = "display: flex;">
+                        <form action="/update_recipe" method="get" style = "display: flex;" >
                             <input type="text"  width="30" height="30" value = "{{ item }}" name = "{{ item }}" id="{{ item }}" required>
                             <input type="image" src="/static/Pencil.jpg"  width="30" height="30"> 
                         </form>
@@ -31,16 +31,17 @@
                     {% endfor %}
                 </ul>
             </div>        
-        <hr>
+        
         
 
-
+ 
 {% endfor %}  
+
 </div>
 <div class="col-3">
     <div class="search-wrapper">
         <label for="search">Search Recipes</label>
-        <input type="search" id = "search">
+        <input type="search" id = "search" data-search>
     </div>
 </div>
 </div>

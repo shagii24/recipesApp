@@ -24,6 +24,19 @@ class dbConnection():
         except Error as e:
             print(f"The error '{e}' occurred")
     
+    def execute_read_query_json(self,query):
+        cursor = self.connect().cursor()
+        result = None
+        try:
+            cursor.execute(query)
+            result = [dict((cursor.description[i][0], value) \
+               for i, value in enumerate(row)) for row in cursor.fetchall()]
+            cursor.close()
+  
+            return result
+        except Error as e:
+            print(f"The error '{e}' occurred")
+
     def execute_query(self, query):
         connection = self.connect()
         cursor = connection.cursor()
