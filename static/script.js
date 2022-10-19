@@ -1,3 +1,4 @@
+
 const searchInput = document.querySelector("[data-search]")
 
 const header = document.querySelectorAll("[data-header]")
@@ -15,7 +16,4 @@ searchInput.addEventListener("input", e => {
         
     })
 })
-
-
 ;
-
